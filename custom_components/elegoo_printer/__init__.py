@@ -121,7 +121,9 @@ async def _async_update_ip(hass: HomeAssistant, call: ServiceCall) -> dict:
     # — it must NOT be awaited. If the HA pin is ever advanced, re-verify
     # this call form.
     new_data = {**entry.data, CONF_IP_ADDRESS: new_ip}
-    hass.config_entries.async_update_entry(entry, data=new_data)
+    new_options = {**entry.options, CONF_IP_ADDRESS: new_ip} if entry.options else entry.options
+    hass.config_entries.async_update_entry(entry, data=new_data, options=new_options)
+
 
     try:
         # On a still-LOADED entry, the data write above also fires the
